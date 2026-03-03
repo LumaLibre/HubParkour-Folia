@@ -237,9 +237,13 @@ public class Parkour implements IParkour {
 
     public void removeHolograms() {
         for (IHologram h : holograms.values()) {
-            HubParkour.getScheduler().runAtLocation(h.getLocation(), t -> {
+            if (HubParkour.isStopping()) {
                 h.remove();
-            });
+            } else {
+                HubParkour.getScheduler().runAtLocation(h.getLocation(), t -> {
+                    h.remove();
+                });
+            }
         }
         HubParkour.getHologramFactory().removeHologramsForParkour(this);
     }

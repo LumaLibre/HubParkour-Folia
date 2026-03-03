@@ -32,8 +32,12 @@ public class DHHologramFactory extends HologramFactory {
     }
 
     public void removeHologram(IHologram hologram) {
-        holograms.get(hologram.getParkour().getId()).remove(hologram);
-        if (holograms.get(hologram.getParkour().getId()).isEmpty()) {
+        List<IHologram> hList = holograms.get(hologram.getParkour().getId());
+        if (hList == null) {
+            return;
+        }
+        hList.remove(hologram);
+        if (hList.isEmpty()) {
             holograms.remove(hologram.getParkour().getId());
         }
     }

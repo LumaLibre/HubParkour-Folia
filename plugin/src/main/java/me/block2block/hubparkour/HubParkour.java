@@ -60,6 +60,8 @@ public class HubParkour extends JavaPlugin {
 
     private static UUID serverUuid;
 
+    private static boolean stopping = false;
+
     static {
         registerSchema(new One());
         registerSchema(new Two());
@@ -321,6 +323,7 @@ public class HubParkour extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        stopping = true;
         if (isHolograms()) {
             for (Parkour parkour : CacheManager.getParkours()) {
                 parkour.removeHolograms();
@@ -490,6 +493,10 @@ public class HubParkour extends JavaPlugin {
 
     public static UUID getServerUuid() {
         return serverUuid;
+    }
+
+    public static boolean isStopping() {
+        return stopping;
     }
 
     public static int getCurrentSchema() {

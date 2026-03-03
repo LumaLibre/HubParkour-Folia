@@ -81,7 +81,9 @@ public abstract class PressurePlate {
                 Bukkit.getLogger().warning("A location that one of your parkour points is in does not exist. Please delete the " + parkour.getName() + " parkour and set it up again.");
                 return;
             }
-            location.getBlock().setType(material);
+            HubParkourAPI.getScheduler().runAtLocation(location, t -> {
+                location.getBlock().setType(material);
+            });
         }
     }
 
@@ -90,7 +92,9 @@ public abstract class PressurePlate {
      */
     public void removeMaterial() {
         if (location == null || location.getWorld() == null) return;
-        location.getBlock().setType(Material.AIR);
+        HubParkourAPI.getScheduler().runAtLocation(location, t -> {
+            location.getBlock().setType(Material.AIR);
+        });
     }
 
     /**

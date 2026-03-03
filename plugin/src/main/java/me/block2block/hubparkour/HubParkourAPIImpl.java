@@ -1,5 +1,6 @@
 package me.block2block.hubparkour;
 
+import com.tcoded.folialib.impl.PlatformScheduler;
 import me.block2block.hubparkour.api.BackendAPI;
 import me.block2block.hubparkour.api.IHubParkourPlayer;
 import me.block2block.hubparkour.api.IParkour;
@@ -98,5 +99,10 @@ public class HubParkourAPIImpl extends BackendAPI {
             return null;
         }
         return HubParkour.getHologramFactory().createHologram(parkour, name, location);
+    }
+
+    @Override
+    public PlatformScheduler getScheduler() {
+        return HubParkour.getScheduler();
     }
 }

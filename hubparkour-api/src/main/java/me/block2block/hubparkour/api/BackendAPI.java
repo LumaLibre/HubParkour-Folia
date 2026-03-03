@@ -1,5 +1,6 @@
 package me.block2block.hubparkour.api;
 
+import com.tcoded.folialib.impl.PlatformScheduler;
 import me.block2block.hubparkour.api.gui.GUI;
 import me.block2block.hubparkour.api.hologram.IHologram;
 import org.bukkit.Location;
@@ -130,4 +131,11 @@ public abstract class BackendAPI {
      */
     public abstract IHologram createHologram(IParkour parkour, String name, Location location);
 
+
+    /**
+     * Retrieves the {@link PlatformScheduler} instance associated with this BackendAPI.
+     *
+     * @return an instance of {@link PlatformScheduler} for scheduling tasks on the platform.
+     */
+    public abstract PlatformScheduler getScheduler();
 }
