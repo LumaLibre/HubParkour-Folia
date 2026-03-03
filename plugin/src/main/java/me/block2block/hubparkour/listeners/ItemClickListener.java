@@ -21,7 +21,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -73,24 +72,18 @@ public class ItemClickListener implements Listener {
                                     l.setY(l.getY() + 0.5);
                                     l.setZ(l.getZ() + 0.5);
                                     p.setVelocity(new Vector(0, 0, 0));
-                                    p.teleport(l);
+                                    HubParkour.getScheduler().teleportAsync(p, l);
                                     ConfigUtil.sendMessage(p, "Messages.Commands.Reset.Successful", "You have been teleported to the start.", true, Collections.emptyMap());
                                     FallListener.getHasTeleported().add(p);
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            FallListener.getHasTeleported().remove(p);
-                                        }
-                                    }.runTaskLater(HubParkour.getInstance(), 5);
+                                    HubParkour.getScheduler().runLater(t -> {
+                                        FallListener.getHasTeleported().remove(p);
+                                    }, 5);
                                 } else {
                                     confirmationRequied.put(p, 0);
                                     ConfigUtil.sendMessage(p, "Messages.Parkour.Confirm-Action", "Please click the item again to confirm your action.", true, Collections.emptyMap());
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            confirmationRequied.remove(p);
-                                        }
-                                    }.runTaskLater(HubParkour.getInstance(), 100);
+                                    HubParkour.getScheduler().runLater(t -> {
+                                        confirmationRequied.remove(p);
+                                    }, 100);
                                 }
                                 return;
                             case 1:
@@ -116,24 +109,18 @@ public class ItemClickListener implements Listener {
                                     l2.setY(l2.getY() + 0.5);
                                     l2.setZ(l2.getZ() + 0.5);
                                     p.setVelocity(new Vector(0, 0, 0));
-                                    p.teleport(l2);
+                                    HubParkour.getScheduler().teleportAsync(p, l2);
                                     ConfigUtil.sendMessage(p, "Messages.Commands.Checkpoint.Successful", "You have been teleported to your last checkpoint.", true, Collections.emptyMap());
                                     FallListener.getHasTeleported().add(p);
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            FallListener.getHasTeleported().remove(p);
-                                        }
-                                    }.runTaskLater(HubParkour.getInstance(), 5);
+                                    HubParkour.getScheduler().runLater(t -> {
+                                        FallListener.getHasTeleported().remove(p);
+                                    }, 5);
                                 } else {
                                     confirmationRequied.put(p, 1);
                                     ConfigUtil.sendMessage(p, "Messages.Parkour.Confirm-Action", "Please click the item again to confirm your action.", true, Collections.emptyMap());
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            confirmationRequied.remove(p);
-                                        }
-                                    }.runTaskLater(HubParkour.getInstance(), 100);
+                                    HubParkour.getScheduler().runLater(t -> {
+                                        confirmationRequied.remove(p);
+                                    }, 100);
                                 }
                                 return;
                             case 2:
@@ -146,22 +133,16 @@ public class ItemClickListener implements Listener {
                                 if ((confirmationRequied.containsKey(p) && confirmationRequied.get(p) == 2) || !ConfigUtil.getBoolean("Settings.Parkour-Items.Cancel.Confirmation", true)) {
                                     confirmationRequied.remove(p);
                                     //Delay to avoid clientside visual glitch
-                                    new BukkitRunnable(){
-                                        @Override
-                                        public void run() {
-                                            player.end(ParkourPlayerFailEvent.FailCause.LEAVE);
-                                        }
-                                    }.runTaskLater(HubParkour.getInstance(), 1);
+                                    HubParkour.getScheduler().runAtEntityLater(player.getPlayer(), t -> {
+                                        player.end(ParkourPlayerFailEvent.FailCause.LEAVE);
+                                    }, 1);
                                     ConfigUtil.sendMessage(p, "Messages.Commands.Leave.Left", "You have left the parkour and your progress has been reset.", true, Collections.emptyMap());
                                 } else {
                                     confirmationRequied.put(p, 2);
                                     ConfigUtil.sendMessage(p, "Messages.Parkour.Confirm-Action", "Please click the item again to confirm your action.", true, Collections.emptyMap());
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            confirmationRequied.remove(p);
-                                        }
-                                    }.runTaskLater(HubParkour.getInstance(), 100);
+                                    HubParkour.getScheduler().runLater(t -> {
+                                        confirmationRequied.remove(p);
+                                    }, 100);
                                 }
                                 return;
                             case 3: {

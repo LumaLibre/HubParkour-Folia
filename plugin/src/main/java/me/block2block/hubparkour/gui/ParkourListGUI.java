@@ -63,7 +63,7 @@ public class ParkourListGUI extends GUI {
                     l.setX(l.getX() + 0.5);
                     l.setY(l.getY() + 0.5);
                     l.setZ(l.getZ() + 0.5);
-                    player.teleport(l);
+                    HubParkour.getScheduler().teleportAsync(player, l);
                     ConfigUtil.sendMessageOrDefault(player, "Messages.Commands.Teleport.Teleported", "You have been teleported to the parkour restart point.", true, Collections.emptyMap());
                     player.closeInventory();
                 } else {

@@ -6,7 +6,6 @@ import me.block2block.hubparkour.api.hologram.ILeaderboardHologram;
 import me.block2block.hubparkour.utils.ConfigUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +30,9 @@ public class LeaderboardHologram implements ILeaderboardHologram {
         LeaderboardHologram instance = this;
 
         //Get ID and insert into database.
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                id = HubParkour.getInstance().getDbManager().addHologram(instance);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            id = HubParkour.getInstance().getDbManager().addHologram(instance);
+        });
     }
 
     public void generate() {
@@ -55,7 +51,9 @@ public class LeaderboardHologram implements ILeaderboardHologram {
 
     public void remove() {
         if (hologram != null) {
-            hologram.remove();
+            HubParkour.getScheduler().runAtLocation(hologram.getLocation(), t -> {
+                hologram.remove();
+            });
         }
     }
 
@@ -67,12 +65,9 @@ public class LeaderboardHologram implements ILeaderboardHologram {
             List<String> record = leaderboard.get(place);
             lines.add(ChatColor.translateAlternateColorCodes('&', ConfigUtil.getString("Messages.Holograms.Leaderboard.Line", "&3#{place}&r - &b{player-name}&r - &b{player-time}").replace("{player-name}", record.get(0)).replace("{player-time}", ConfigUtil.formatTime(Long.parseLong(record.get(1)))).replace("{place}", "" + place)));
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                hologram.setLines(lines);
-            }
-        }.runTask(HubParkour.getInstance());
+        HubParkour.getScheduler().runAtLocation(hologram.getLocation(), a -> {
+            hologram.setLines(lines);
+        });
     }
 
     public Location getLocation() {

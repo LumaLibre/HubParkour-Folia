@@ -20,7 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Collections;
@@ -77,7 +76,7 @@ public class PressurePlateListener implements Listener {
                     l.setZ(l.getZ() + 0.5);
                     e.getPlayer().setFallDistance(0);
                     e.getPlayer().setVelocity(new Vector(0, 0, 0));
-                    e.getPlayer().teleport(l);
+                    HubParkour.getScheduler().teleportAsync(e.getPlayer(), l);
                     ConfigUtil.sendMessageOrDefault(e.getPlayer(), "Messages.Parkour.Teleport", "You have been teleported to your last checkpoint.", true, Collections.emptyMap());
                     return;
                 }
@@ -125,15 +124,12 @@ public class PressurePlateListener implements Listener {
                             l.setZ(l.getZ() + 0.5);
                             double health = p.getHealth();
                             p.setVelocity(new Vector(0, 0, 0));
-                            p.teleport(l);
+                            HubParkour.getScheduler().teleportAsync(p, l);
                             ConfigUtil.sendMessage(p, "Messages.Parkour.Teleport", "You have been teleported to your last checkpoint.", true, Collections.emptyMap());
                             FallListener.getHasTeleported().add(p);
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    FallListener.getHasTeleported().remove(p);
-                                }
-                            }.runTaskLater(HubParkour.getInstance(), 5);
+                            HubParkour.getScheduler().runLater(t -> {
+                                FallListener.getHasTeleported().remove(p);
+                            }, 5);
                             return;
                         }
                     }
@@ -189,7 +185,7 @@ public class PressurePlateListener implements Listener {
                     l.setZ(l.getZ() + 0.5);
                     e.getPlayer().setFallDistance(0);
                     e.getPlayer().setVelocity(new Vector(0, 0, 0));
-                    e.getPlayer().teleport(l);
+                    HubParkour.getScheduler().teleportAsync(e.getPlayer(), l);
                     ConfigUtil.sendMessageOrDefault(e.getPlayer(), "Messages.Parkour.Teleport", "You have been teleported to your last checkpoint.", true, Collections.emptyMap());
                     return;
                 }
@@ -208,7 +204,7 @@ public class PressurePlateListener implements Listener {
                         l.setZ(l.getZ() + 0.5);
                         e.getPlayer().setFallDistance(0);
                         e.getPlayer().setVelocity(new Vector(0, 0, 0));
-                        e.getPlayer().teleport(l);
+                        HubParkour.getScheduler().teleportAsync(e.getPlayer(), l);
                         ConfigUtil.sendMessageOrDefault(e.getPlayer(), "Messages.Parkour.Teleport", "You have been teleported to your last checkpoint.", true, Collections.emptyMap());
                         return;
                     }
@@ -231,15 +227,12 @@ public class PressurePlateListener implements Listener {
                         l.setZ(l.getZ() + 0.5);
                         double health = p.getHealth();
                         p.setVelocity(new Vector(0, 0, 0));
-                        p.teleport(l);
+                        HubParkour.getScheduler().teleportAsync(p, l);
                         ConfigUtil.sendMessage(p, "Messages.Parkour.Teleport", "You have been teleported to your last checkpoint.", true, Collections.emptyMap());
                         FallListener.getHasTeleported().add(p);
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                FallListener.getHasTeleported().remove(p);
-                            }
-                        }.runTaskLater(HubParkour.getInstance(), 5);
+                        HubParkour.getScheduler().runLater(() -> {
+                            FallListener.getHasTeleported().remove(p);
+                        }, 5);
                         return;
                     }
                 }

@@ -9,7 +9,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -409,30 +408,24 @@ public class EditWizard {
                     commands = null;
                 }
                 checkpoint.setRewards(commands);
-                new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        HubParkour.getInstance().getDbManager().updateCheckpointRewards(
-                                parkour.getId(),
-                                checkpoint
-                        );
-                    }
-                }.runTaskAsynchronously(HubParkour.getInstance());
+                HubParkour.getScheduler().runAsync(t -> {
+                    HubParkour.getInstance().getDbManager().updateCheckpointRewards(
+                            parkour.getId(),
+                            checkpoint
+                    );
+                });
                 ConfigUtil.sendMessageOrDefault(player, "Messages.Commands.Admin.Edit.Commands.Command-Deleted", "Command successfully deleted!", true, Collections.emptyMap());
                 displayCheckpointRewardsMenu();
                 return true;
             }
             case CHECKPOINTS_REWARDS_ADD: {
                 if (message.equalsIgnoreCase("done")) {
-                    new BukkitRunnable(){
-                        @Override
-                        public void run() {
-                            HubParkour.getInstance().getDbManager().updateCheckpointRewards(
-                                    parkour.getId(),
-                                    checkpoint
-                            );
-                        }
-                    }.runTaskAsynchronously(HubParkour.getInstance());
+                    HubParkour.getScheduler().runAsync(t -> {
+                        HubParkour.getInstance().getDbManager().updateCheckpointRewards(
+                                parkour.getId(),
+                                checkpoint
+                        );
+                    });
                     displayCheckpointRewardsMenu();
                     return true;
                 }
@@ -504,13 +497,10 @@ public class EditWizard {
                 }
                 if (message.equalsIgnoreCase("done")) {
                     Checkpoint finalCheckpoint = checkpoint;
-                    new BukkitRunnable(){
-                        @Override
-                        public void run() {
-                            //Use final checkpoint as checkpoint gets set to null in the returnToCheckpointMenu call.
-                            parkour.addCheckpoint(finalCheckpoint, after + 1);
-                        }
-                    }.runTask(HubParkour.getInstance());
+                    HubParkour.getScheduler().runAtLocation(finalCheckpoint.getLocation(), t -> {
+                        //Use final checkpoint as checkpoint gets set to null in the returnToCheckpointMenu call.
+                        parkour.addCheckpoint(finalCheckpoint, after + 1);
+                    });
                     ConfigUtil.sendMessageOrDefault(player, "Messages.Commands.Admin.Edit.Checkpoints.Add.Success", "The checkpoint has been successfully added!", true, Collections.emptyMap());
                     returnToCheckpointMenu();
                     return true;

@@ -1,5 +1,6 @@
 package me.block2block.hubparkour.signs;
 
+import me.block2block.hubparkour.HubParkour;
 import me.block2block.hubparkour.api.events.player.ParkourPlayerFailEvent;
 import me.block2block.hubparkour.api.events.player.ParkourPlayerStartEvent;
 import me.block2block.hubparkour.api.signs.ClickableSign;
@@ -63,8 +64,7 @@ public class StartClickableSign extends ClickableSign {
                 //Do nothing, is doing a different parkour.
                 if (ConfigUtil.getBoolean("Settings.Start-When-In-Parkour", false)) {
                     CacheManager.getPlayer(p).end(ParkourPlayerFailEvent.FailCause.NEW_PARKOUR);
-
-                    p.teleport(parkour.getRestartPoint().getLocation());
+                    HubParkour.getScheduler().teleportAsync(p, parkour.getRestartPoint().getLocation());
                     //Start the new parkour
                     HubParkourPlayer player = new HubParkourPlayer(p, (Parkour) parkour);
                     ParkourPlayerStartEvent event = new ParkourPlayerStartEvent(parkour, player, player.getStartTime());
@@ -98,7 +98,7 @@ public class StartClickableSign extends ClickableSign {
             }
         } else {
             //Start the parkour
-            p.teleport(parkour.getRestartPoint().getLocation());
+            HubParkour.getScheduler().teleportAsync(p, parkour.getRestartPoint().getLocation());
             Parkour parkour = (Parkour) this.parkour;
             HubParkourPlayer player = new HubParkourPlayer(p, parkour);
             ParkourPlayerStartEvent event = new ParkourPlayerStartEvent(parkour, player, player.getStartTime());

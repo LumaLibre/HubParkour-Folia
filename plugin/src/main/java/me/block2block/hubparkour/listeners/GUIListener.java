@@ -12,7 +12,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class GUIListener implements Listener {
 
@@ -46,13 +45,9 @@ public class GUIListener implements Listener {
                     if (e.getInventory().getType() != InventoryType.PLAYER && e.getInventory().getType() != InventoryType.CREATIVE) {
                         if (gui.cancelEvent()) {
                             e.setCancelled(true);
-
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    ((Player) e.getWhoClicked()).updateInventory();
-                                }
-                            }.runTaskLater(HubParkour.getInstance(), 3);
+                            HubParkour.getScheduler().runAtEntityLater(e.getWhoClicked(), t -> {
+                                ((Player) e.getWhoClicked()).updateInventory();
+                            }, 3);
                         }
                         int row = e.getSlot() / 9;
                         int column = e.getSlot() % 9;

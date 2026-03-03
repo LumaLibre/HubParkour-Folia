@@ -1,5 +1,6 @@
 package me.block2block.hubparkour.signs;
 
+import me.block2block.hubparkour.HubParkour;
 import me.block2block.hubparkour.api.signs.ClickableSign;
 import me.block2block.hubparkour.entities.Parkour;
 import me.block2block.hubparkour.utils.ConfigUtil;
@@ -38,6 +39,6 @@ public class TeleportClickableSign extends ClickableSign {
     }
 
     public void onClick(Player player) {
-        player.teleport(parkour.getRestartPoint().getLocation());
+        HubParkour.getScheduler().teleportAsync(player, parkour.getRestartPoint().getLocation());
     }
 }

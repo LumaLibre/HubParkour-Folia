@@ -1,11 +1,11 @@
 package me.block2block.hubparkour.api;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import me.block2block.hubparkour.api.events.player.ParkourPlayerFailEvent;
 import me.block2block.hubparkour.api.items.ParkourItem;
 import me.block2block.hubparkour.api.plates.Checkpoint;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +91,7 @@ public interface IHubParkourPlayer {
      * Get the active action bar task.
      * @return the BukkitTask object if it is active, null if not.
      */
-    BukkitTask getActionBarTask();
+    WrappedTask getActionBarTask();
 
     /**
      * Get a map of all split times, mapped by checkpoint number.

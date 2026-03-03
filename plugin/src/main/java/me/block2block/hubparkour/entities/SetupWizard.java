@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -148,33 +147,28 @@ public class SetupWizard {
 
                 ParkourSetupEvent setupEvent = new ParkourSetupEvent(parkour, player);
                 Bukkit.getPluginManager().callEvent(setupEvent);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (PressurePlate pp : parkour.getAllPoints()) {
-                            pp.placeMaterial();
-                            if (pp.getType() != 2) {
-                                CacheManager.addPoint(pp);
-                            } else {
-                                CacheManager.addRestartPoint(pp);
-                            }
-                        }
 
-                        if (HubParkour.isHolograms()) {
-                            parkour.generateHolograms();
+                for (PressurePlate pp : parkour.getAllPoints()) {
+                    HubParkour.getScheduler().runAtLocation(pp.getLocation(), t -> {
+                        pp.placeMaterial();
+                        if (pp.getType() != 2) {
+                            CacheManager.addPoint(pp);
+                        } else {
+                            CacheManager.addRestartPoint(pp);
                         }
+                    });
+                }
 
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                Parkour newParkour = HubParkour.getInstance().getDbManager().addParkour(parkour);
-                                CacheManager.addParkour(newParkour);
-                                CacheManager.exitSetup();
-                                ConfigUtil.sendMessageOrDefault(player, "Messages.Commands.Admin.Setup.Setup-Complete", "Parkour setup complete!", true, Collections.emptyMap());
-                            }
-                        }.runTaskAsynchronously(HubParkour.getInstance());
-                    }
-                }.runTask(HubParkour.getInstance());
+                if (HubParkour.isHolograms()) {
+                    parkour.generateHolograms();
+                }
+
+                HubParkour.getScheduler().runAsync(t -> {
+                    Parkour newParkour = HubParkour.getInstance().getDbManager().addParkour(parkour);
+                    CacheManager.addParkour(newParkour);
+                    CacheManager.exitSetup();
+                    ConfigUtil.sendMessageOrDefault(player, "Messages.Commands.Admin.Setup.Setup-Complete", "Parkour setup complete!", true, Collections.emptyMap());
+                });
                 return true;
             case CHECKPOINTS:
                 if (message.equalsIgnoreCase("done")) {

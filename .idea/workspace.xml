@@ -31,19 +31,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b53f693-728c-414c-8031-dbb84f846e1e" name="Default Changelist" comment="v2.9: FancyHolograms support and bugfixes&#10; - Fixed some issues with null references in parkours&#10; - Fixed an issue where, if DecentHolograms was not installed, you could not delete a parkour.&#10; - Made loading the plugin more robust by catching some exceptions that could be thrown when loading signs. These are not blocking errors so should be ignored during startup.&#10; - Added support for FancyHolograms&#10; - Updated how holograms are handled and exposed holograms to the API. Holograms should be significantly more robust.&#10; - You can now block inventory clicks while in a parkour, added by Vihara&#10; - Fixed some issues with split times.&#10;&#10;Signed-off-by: Block2Block &lt;accounts@block2block.me&gt;">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hubparkour-api/hubparkour-api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugin/plugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hubparkour-api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hubparkour-api/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hubparkour-api/src/main/java/me/block2block/hubparkour/api/IHubParkourPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/hubparkour-api/src/main/java/me/block2block/hubparkour/api/IHubParkourPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/HubParkour.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/HubParkour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/commands/CommandParkour.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/commands/CommandParkour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/EditWizard.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/EditWizard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/HubParkourPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/HubParkourPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/LeaderboardHologram.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/LeaderboardHologram.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/Parkour.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/Parkour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/SetupWizard.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/entities/SetupWizard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/gui/ParkourListGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/gui/ParkourListGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/FallListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/FallListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/GUIListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/GUIListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/ItemClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/ItemClickListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/PressurePlateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/listeners/PressurePlateListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/signs/StartClickableSign.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/signs/StartClickableSign.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/signs/StatsClickableSign.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/signs/StatsClickableSign.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/signs/TeleportClickableSign.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/me/block2block/hubparkour/signs/TeleportClickableSign.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/jonah/idea/HubParkour" value="1TI7TQ5gQYXoPkbFk5MlUB2PiMY" />
+    </persistenceIdMap>
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -223,12 +246,15 @@
       </list>
     </option>
   </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Block2Block/HubParkour.git&quot;,
-    &quot;accountId&quot;: &quot;e48afc10-7980-4fd9-bd8e-e19e9d60f5d7&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Block2Block/HubParkour.git",
+    "accountId": "7eaa31fd-bb99-4576-8e07-fd7e8c9286d1"
   }
-}</component>
+}]]></component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -244,11 +270,27 @@
     </option>
   </component>
   <component name="McpProjectServerCommands">
-    <commands />
-    <urls />
+    <McpServerCommand sourceId="UserConfigurationSource">
+      <option name="allowedToolsNames" />
+      <option name="enabled" value="true" />
+      <option name="name" value="" />
+      <option name="programPath" value="" />
+      <option name="arguments" value="" />
+      <option name="workingDirectory" value="" />
+      <envs />
+    </McpServerCommand>
+    <McpServerCommand sourceId="UserConfigurationSource">
+      <option name="allowedToolsNames" />
+      <option name="enabled" value="true" />
+      <option name="name" value="" />
+      <option name="programPath" value="" />
+      <option name="arguments" value="" />
+      <option name="workingDirectory" value="" />
+      <envs />
+    </McpServerCommand>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -263,42 +305,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Maven.hubparkour [clean,javadoc:javadoc].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.hubparkour [clean,package,-U].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.hubparkour [clean,package,deploy,-pl...].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.hubparkour [clean,package,deploy].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.hubparkour [clean,package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.hubparkour [javadoc:javadoc,-pl...].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.hubparkour [javadoc:javadoc].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Programming Projects/Java/HubParkour&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AtomSelectConfig&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.hubparkour [clean,javadoc:javadoc].executor": "Run",
+    "Maven.hubparkour [clean,package,-U].executor": "Run",
+    "Maven.hubparkour [clean,package,deploy,-pl...].executor": "Run",
+    "Maven.hubparkour [clean,package,deploy].executor": "Run",
+    "Maven.hubparkour [clean,package].executor": "Run",
+    "Maven.hubparkour [javadoc:javadoc,-pl...].executor": "Run",
+    "Maven.hubparkour [javadoc:javadoc].executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "master",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/Programming Projects/Java/HubParkour",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="Push.Settings">
     <force-push-targets>
       <force-push-target remote-path="origin" branch="community" />
@@ -406,8 +453,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
@@ -838,6 +885,7 @@
       <workItem from="1770658090563" duration="5757000" />
       <workItem from="1771620909717" duration="3253000" />
       <workItem from="1771879518206" duration="3156000" />
+      <workItem from="1772520169439" duration="4349000" />
     </task>
     <task id="LOCAL-00026" summary="Updating readme.md">
       <created>1588429523231</created>
@@ -1254,8 +1302,20 @@
     <MESSAGE value="v2.9: FancyHolograms support and bugfixes&#10; - Fixed some issues with null references in parkours&#10; - Fixed an issue where, if DecentHolograms was not installed, you could not delete a parkour.&#10; - Made loading the plugin more robust by catching some exceptions that could be thrown when loading signs. These are not blocking errors so should be ignored during startup.&#10; - Added support for FancyHolograms&#10; - Updated how holograms are handled and exposed holograms to the API. Holograms should be significantly more robust.&#10; - You can now block inventory clicks while in a parkour, added by Vihara&#10; - Fixed some issues with split times.&#10;&#10;Signed-off-by: Block2Block &lt;accounts@block2block.me&gt;" />
     <option name="LAST_COMMIT_MESSAGE" value="v2.9: FancyHolograms support and bugfixes&#10; - Fixed some issues with null references in parkours&#10; - Fixed an issue where, if DecentHolograms was not installed, you could not delete a parkour.&#10; - Made loading the plugin more robust by catching some exceptions that could be thrown when loading signs. These are not blocking errors so should be ignored during startup.&#10; - Added support for FancyHolograms&#10; - Updated how holograms are handled and exposed holograms to the API. Holograms should be significantly more robust.&#10; - You can now block inventory clicks while in a parkour, added by Vihara&#10; - Fixed some issues with split times.&#10;&#10;Signed-off-by: Block2Block &lt;accounts@block2block.me&gt;" />
   </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

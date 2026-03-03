@@ -1,5 +1,7 @@
 package me.block2block.hubparkour;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
 import me.block2block.hubparkour.api.BackendAPI;
 import me.block2block.hubparkour.api.db.DatabaseSchemaUpdate;
 import me.block2block.hubparkour.api.hologram.HologramFactory;
@@ -44,6 +46,8 @@ public class HubParkour extends JavaPlugin {
 
     private static HubParkour instance;
 
+    private static PlatformScheduler scheduler;
+
     private static boolean placeholders = false;
     private static DatabaseManager dbManager;
 
@@ -68,6 +72,8 @@ public class HubParkour extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        scheduler = new FoliaLib(this).getScheduler();
 
         BackendAPI.setImplementation(new HubParkourAPIImpl());
 
@@ -327,10 +333,16 @@ public class HubParkour extends JavaPlugin {
                 pl.setToPrevState();
             }
         }
+
+        scheduler.cancelAllTasks();
     }
 
     public static HubParkour getInstance() {
         return instance;
+    }
+
+    public static PlatformScheduler getScheduler() {
+        return scheduler;
     }
 
     public DatabaseManager getDbManager() {return dbManager;}

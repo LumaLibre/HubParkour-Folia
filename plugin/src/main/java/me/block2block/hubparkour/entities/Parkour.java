@@ -1,7 +1,5 @@
 package me.block2block.hubparkour.entities;
 
-import eu.decentsoftware.holograms.api.DHAPI;
-import eu.decentsoftware.holograms.api.holograms.Hologram;
 import me.block2block.hubparkour.HubParkour;
 import me.block2block.hubparkour.api.IHubParkourPlayer;
 import me.block2block.hubparkour.api.hologram.IHologram;
@@ -15,7 +13,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -146,23 +143,17 @@ public class Parkour implements IParkour {
     public void setGlobalCheckpointCommands(List<String> globalCheckpointCommands) {
         this.globalCheckpointCommands = globalCheckpointCommands;
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setGlobalCheckpointCommands(id, globalCheckpointCommands);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setGlobalCheckpointCommands(id, globalCheckpointCommands);
+        });
     }
 
     public void setEndCommands(List<String> endCommands) {
         this.endCommands = endCommands;
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setEndCommands(id, endCommands);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setEndCommands(id, endCommands);
+        });
     }
 
     public List<PressurePlate> getAllPoints() {
@@ -216,34 +207,39 @@ public class Parkour implements IParkour {
                     continue;
             }
             Location l = p.getLocation().clone();
-            l.setX(l.getX() + 0.5);
-            l.setZ(l.getZ() + 0.5);
-            l.setY(l.getY() + 2);
-            if (l.getWorld() == null) {
-                continue;
-            }
-            IHologram hologram = HubParkour.getHologramFactory().createHologram(p.getParkour(), "hp_" + id + "-" + p.getType() + ((p instanceof Checkpoint)?"-" + ((Checkpoint) p).getCheckpointNo():""), l);
-            int counter = 0;
-
-            List<String> lines = new ArrayList<>();
-
-            for (String s : ConfigUtil.getStringList("Messages.Holograms." + configKey, defaultValues)) {
-                s = ChatColor.translateAlternateColorCodes('&', s.replace("{parkour-name}",name).replace("{checkpoint}",((p instanceof Checkpoint)?((Checkpoint)p).getCheckpointNo() + "":"")));
-                if (HubParkour.isPlaceholders()) {
-                    s = PlaceholderAPI.setPlaceholders(null, s);
+            final String finalConfigKey = configKey;
+            HubParkour.getScheduler().runAtLocation(l, t -> {
+                l.setX(l.getX() + 0.5);
+                l.setZ(l.getZ() + 0.5);
+                l.setY(l.getY() + 2);
+                if (l.getWorld() == null) {
+                    return;
                 }
-                lines.add(s);
-                counter++;
-            }
-            hologram.setLines(lines);
-            holograms.put(p, hologram);
+                IHologram hologram = HubParkour.getHologramFactory().createHologram(p.getParkour(), "hp_" + id + "-" + p.getType() + ((p instanceof Checkpoint)?"-" + ((Checkpoint) p).getCheckpointNo():""), l);
+                int counter = 0;
+
+                List<String> lines = new ArrayList<>();
+
+                for (String s : ConfigUtil.getStringList("Messages.Holograms." + finalConfigKey, defaultValues)) {
+                    s = ChatColor.translateAlternateColorCodes('&', s.replace("{parkour-name}",name).replace("{checkpoint}",((p instanceof Checkpoint)?((Checkpoint)p).getCheckpointNo() + "":"")));
+                    if (HubParkour.isPlaceholders()) {
+                        s = PlaceholderAPI.setPlaceholders(null, s);
+                    }
+                    lines.add(s);
+                    counter++;
+                }
+                hologram.setLines(lines);
+                holograms.put(p, hologram);
+            });
         }
 
     }
 
     public void removeHolograms() {
         for (IHologram h : holograms.values()) {
-            h.remove();
+            HubParkour.getScheduler().runAtLocation(h.getLocation(), t -> {
+                h.remove();
+            });
         }
         HubParkour.getHologramFactory().removeHologramsForParkour(this);
     }
@@ -252,7 +248,9 @@ public class Parkour implements IParkour {
         players.add(p);
         for (ClickableSign sign : CacheManager.getSigns().values()) {
             if (sign.getParkour().equals(this)) {
-                sign.refresh();
+                HubParkour.getScheduler().runAtLocation(sign.getSignState().getLocation(), t -> {
+                    sign.refresh();
+                });
             }
         }
     }
@@ -271,7 +269,7 @@ public class Parkour implements IParkour {
             location.setZ(location.getZ() + 0.5);
             location.setX(location.getX() + 0.5);
             p.getPlayer().setVelocity(new Vector(0, 0, 0));
-            p.getPlayer().teleport(location);
+            HubParkour.getScheduler().teleportAsync(p.getPlayer(), location);
         }
     }
 
@@ -298,23 +296,17 @@ public class Parkour implements IParkour {
 
     public void setName(String name) {
         this.name = name;
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setName(id, name);
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setName(id, name);
+        });
+        if (HubParkour.isHolograms()) {
+            generateHolograms();
+            for (ILeaderboardHologram hologram : leaderboardHolograms) {
+                HubParkour.getScheduler().runAtLocation(hologram.getLocation(), t -> {
+                    hologram.refresh();
+                });
             }
-        }.runTaskAsynchronously(HubParkour.getInstance());
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                if (HubParkour.isHolograms()) {
-                    generateHolograms();
-                    for (ILeaderboardHologram hologram : leaderboardHolograms) {
-                        hologram.refresh();
-                    }
-                }
-            }
-        }.runTask(HubParkour.getInstance());
+        }
     }
 
     public void setStartPoint(StartPoint point) {
@@ -323,13 +315,10 @@ public class Parkour implements IParkour {
         CacheManager.addPoint(point);
         this.start.setParkour(this);
         point.placeMaterial();
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setStartPoint(id, point);
-                HubParkour.getInstance().getDbManager().resetSplitTimes(id);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setStartPoint(id, point);
+            HubParkour.getInstance().getDbManager().resetSplitTimes(id);
+        });
         if (HubParkour.isHolograms()) {
             generateHolograms();
         }
@@ -341,13 +330,10 @@ public class Parkour implements IParkour {
         CacheManager.addPoint(point);
         this.endPoint.setParkour(this);
         point.placeMaterial();
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setEndPoint(id, point);
-                HubParkour.getInstance().getDbManager().resetSplitTimes(id);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setEndPoint(id, point);
+            HubParkour.getInstance().getDbManager().resetSplitTimes(id);
+        });
         if (HubParkour.isHolograms()) {
             generateHolograms();
         }
@@ -356,12 +342,9 @@ public class Parkour implements IParkour {
     public void deleteExitPoint() {
         CacheManager.removePlate(this.exitPoint);
         this.exitPoint = null;
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().deleteExitPoint(id);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().deleteExitPoint(id);
+        });
     }
 
     public void setExitPoint(ExitPoint point, boolean alreadyExists) {
@@ -373,19 +356,13 @@ public class Parkour implements IParkour {
         this.exitPoint.setParkour(this);
         point.placeMaterial();
         if (alreadyExists) {
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    HubParkour.getInstance().getDbManager().updateExitPoint(id, point);
-                }
-            }.runTaskAsynchronously(HubParkour.getInstance());
+            HubParkour.getScheduler().runAsync(t -> {
+                HubParkour.getInstance().getDbManager().updateExitPoint(id, point);
+            });
         } else {
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    HubParkour.getInstance().getDbManager().setExitPoint(id, point);
-                }
-            }.runTaskAsynchronously(HubParkour.getInstance());
+            HubParkour.getScheduler().runAsync(t -> {
+                HubParkour.getInstance().getDbManager().setExitPoint(id, point);
+            });
         }
 
     }
@@ -395,12 +372,9 @@ public class Parkour implements IParkour {
         this.restartPoint = point;
         this.restartPoint.setParkour(this);
         CacheManager.addRestartPoint(point);
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setRestartPoint(id, point);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setRestartPoint(id, point);
+        });
     }
 
     public void addCheckpoint(Checkpoint point, int checkNo) {
@@ -413,12 +387,9 @@ public class Parkour implements IParkour {
                     this.checkpoints.add(point);
                 }
                 checkpoint.setCheckpointNo(checkpoint.getCheckpointNo() + 1);
-                new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        HubParkour.getInstance().getDbManager().updateCheckpointNumber(id, checkpoint);
-                    }
-                }.runTaskAsynchronously(HubParkour.getInstance());
+                HubParkour.getScheduler().runAsync(t -> {
+                    HubParkour.getInstance().getDbManager().updateCheckpointNumber(id, checkpoint);
+                });
             }
             this.checkpoints.add(checkpoint);
         }
@@ -428,16 +399,13 @@ public class Parkour implements IParkour {
 
         point.placeMaterial();
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().addCheckpoint(id, point);
-                HubParkour.getInstance().getDbManager().resetSplitTimes(id);
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().addCheckpoint(id, point);
+            HubParkour.getInstance().getDbManager().resetSplitTimes(id);
 
 
-                CacheManager.addPoint(point);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+            CacheManager.addPoint(point);
+        });
 
         if (HubParkour.isHolograms()) {
             generateHolograms();
@@ -445,32 +413,23 @@ public class Parkour implements IParkour {
     }
 
     public void deleteCheckpoint(Checkpoint point) {
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                CacheManager.removePlate(point);
-            }
-        }.runTask(HubParkour.getInstance());
+        HubParkour.getScheduler().runAtLocation(point.getLocation(), t -> {
+            CacheManager.removePlate(point);
+        });
         this.checkpoints.remove(point);
         for (Checkpoint checkpoint : checkpoints) {
             if (checkpoint.getCheckpointNo() > point.getCheckpointNo()) {
                 checkpoint.setCheckpointNo(checkpoint.getCheckpointNo() - 1);
-                new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        HubParkour.getInstance().getDbManager().updateCheckpointNumber(id, checkpoint);
-                    }
-                }.runTaskAsynchronously(HubParkour.getInstance());
+                HubParkour.getScheduler().runAsync(t -> {
+                    HubParkour.getInstance().getDbManager().updateCheckpointNumber(id, checkpoint);
+                });
             }
         }
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().deleteCheckpoint(id, point);
-                HubParkour.getInstance().getDbManager().resetSplitTimes(id);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().deleteCheckpoint(id, point);
+            HubParkour.getInstance().getDbManager().resetSplitTimes(id);
+        });
 
         if (HubParkour.isHolograms()) {
             generateHolograms();
@@ -481,12 +440,9 @@ public class Parkour implements IParkour {
         this.borderPoints.clear();
         this.borderPoints.addAll(borderPoints);
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setBorders(id, borderPoints);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setBorders(id, borderPoints);
+        });
     }
 
     public List<BorderPoint> getBorders() {
@@ -504,12 +460,9 @@ public class Parkour implements IParkour {
 
     public void setRewardCooldown(int rewardCooldown) {
         this.rewardCooldown = rewardCooldown;
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setRewardCooldown(id, rewardCooldown);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setRewardCooldown(id, rewardCooldown);
+        });
     }
 
     public Material getItemMaterial() {
@@ -530,12 +483,9 @@ public class Parkour implements IParkour {
         this.material = material;
         this.data = data;
         this.customModelData = customModelData;
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                HubParkour.getInstance().getDbManager().setItem(id, material, data, customModelData);
-            }
-        }.runTaskAsynchronously(HubParkour.getInstance());
+        HubParkour.getScheduler().runAsync(t -> {
+            HubParkour.getInstance().getDbManager().setItem(id, material, data, customModelData);
+        });
     }
 }
 
